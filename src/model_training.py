@@ -29,10 +29,12 @@ X = data['url']
 y = data['label']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+class_weight={label: 1/len(y_train[y_train == label]) for label in np.unique(y_train)}
+
 # Create a pipeline
 pipeline = Pipeline([
     ('tfidf', TfidfVectorizer(ngram_range=(3,6))),
-    ('clf', SGDClassifier())
+    ('clf', SGDClassifier(loss='modified_huber', class_weight=class_weight, random_state=42))
 ])
 
 print('Training the model...')
