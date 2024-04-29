@@ -1,5 +1,8 @@
 # Webpage URL Classification
 
+> [!NOTE]  
+> This repo is not complete, we will add more experiments and code in the next days
+
 This repository contains code for URL Classification , designed to classify URLs into predefined categories using machine learning techniques. The project utilizes a leanier classifier with Stochastic Gradient Descent (SGD) optimizer, alongside a TfidfVectorizer for feature extraction.
 
 
@@ -62,6 +65,21 @@ python predict_urls.py
 ```
 
 The predictions will be saved to `predictions.csv` in the root directory.
+
+## To Do
+- [ ] **Use Different ML Models and Compare Them**: Implement and evaluate other machine learning models to compare their performance against the current SGD Classifier such as: 
+   - [ ] SVC
+   - [ ] Random Forest
+   - [ ] Logistic Regression
+   - [ ] Neural Networks 
+  
+- [ ] **Measure the Prediction Latency**: Measure the time it takes to predict labels for new URLs.
+
+- [ ] **Include URL Augmentation for the Training Phase**: Investigate and integrate URL augmentation techniques to enhance the diversity and volume of the training data, which could improve model robustness and accuracy.
+
+### Done ✓
+- [x] **Utilize Class Weight**: Explore using the `class_weight` parameter in the model training process to handle class imbalance
+
 
 ## Contributing
 
