@@ -221,3 +221,4 @@ pyrightconfig.json
 /url_cls_env
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,jupyternotebooks,linux
 models/SGD_pipeline.pkl
+models/SVC.pkl
