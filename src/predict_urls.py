@@ -1,35 +1,49 @@
-# load a list of URLs either in a .csv file (the column should be named 'url') or a list of URLs in a .txt file, and predict the labels for the URLs using the trained pipeline saved in 'url-classification/models/SGD_pipeline.pkl'
-
 import os
 import pickle
 import pandas as pd
-import numpy as np
 
-def predict_urls(url_list):
-    # Load the trained pipeline
-    model_path = os.path.join(os.path.dirname(__file__), '../models/SGD_pipeline.pkl')
+def list_models(model_directory):
+    return [f for f in os.listdir(model_directory) if f.endswith('.pkl')]
+
+def load_model(model_path):
     with open(model_path, 'rb') as file:
-        pipeline = pickle.load(file)
+        return pickle.load(file)
 
-    # Load the URLs to predict
+def load_urls(url_list):
     if url_list.endswith('.csv'):
         data = pd.read_csv(url_list)
-        X = data['url']
+        return data['url']
     elif url_list.endswith('.txt'):
         with open(url_list, 'r') as file:
-            X = file.readlines()
+            return [line.strip() for line in file]
     else:
         raise ValueError('URL list must be either a .csv file or a .txt file')
 
-    # Predict the labels
-    y_pred = pipeline.predict(X)
-    return X, y_pred
+def predict_urls(model, urls):
+    return model.predict(urls)
 
-# Get input from the user, use predict_urls to get the prediction and save them in a .csv file with the URLs and their predicted labels
-url_list = input('Enter the path to the file containing the list of URLs: ')
-X, y_pred = predict_urls(url_list)
-output = pd.DataFrame({'url': X, 'predicted_label': y_pred})
-output.to_csv('predictions.csv', index=False)
+def save_predictions(urls, predictions, output_path):
+    pd.DataFrame({'url': urls, 'predicted_label': predictions}).to_csv(output_path, index=False)
+    print(f'Predictions saved to {output_path}')
 
-print(f'Predictions saved to predictions.csv')
+# Main execution flow
+if __name__ == "__main__":
+    model_directory = os.path.join(os.path.dirname(__file__), '../models/')
+    models = list_models(model_directory)
+    if not models:
+        raise FileNotFoundError("No model files found in the directory.")
 
+    print("Available models:")
+    for i, model_name in enumerate(models, 1):
+        print(f"{i}. {model_name}")
+    model_index = int(input("Enter the number of the model you want to use: ")) - 1
+    model_path = os.path.join(model_directory, models[model_index])
+
+    model = load_model(model_path)
+    
+    url_list_path = input('Enter the path to the file containing the list of URLs: ')
+    urls = load_urls(url_list_path)
+    
+    predictions = predict_urls(model, urls)
+    
+    save_predictions(urls, predictions, 'predictions.csv')
