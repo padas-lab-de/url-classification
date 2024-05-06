@@ -68,7 +68,7 @@ The predictions will be saved to `predictions.csv` in the root directory.
 
 ## To Do
 - [ ] **Use Different ML Models and Compare Them**: Implement and evaluate other machine learning models to compare their performance against the current SGD Classifier such as: 
-   - [ ] SVC
+   - [x] SVC
    - [ ] Random Forest
    - [ ] Logistic Regression
    - [ ] Neural Networks 
